@@ -1,0 +1,88 @@
+﻿@using Mvc01.Models
+@model Machine
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<h2>Index</h2>
+
+<div>
+    Total Amount <strong>@Model.TotalAmount</strong>
+
+
+</div>
+
+<form action="/Machines/InsertCoin" method="post">
+    <div class="checkbox">
+        <input type="checkbox" name="power" id="power" checked data-toggle="toggle" onchange="enableButton();" > POWER
+    </div>
+
+    <button class="btn btn-success" type="submit" name="amount" id="amount1" value="1">1</button>
+    <button class="btn btn-danger" type="submit" name="amount" id="amount5" value="5">5</button>
+    <button class="btn btn-info" type="submit" name="amount" id="amount10" value="10">10</button>
+</form>
+
+@if (Model.TotalAmount > 50)
+{
+    <div>Thanks</div>
+}
+else
+{
+
+    <div>Add More!!</div>
+    <br />
+    <div >
+        <form action="/Machines/Cancel" id="CancelButton" method="post">
+            <button class="btn btn-danger" type="submit" name="amount" value="Cancel">Cancel</button>
+        </form>
+
+    </div>
+
+
+}
+
+    <script>
+        if (@Model.TotalAmount > 0) {
+            document.getElementById("CancelButton").style.display = "block";
+        } else {
+            document.getElementById("CancelButton").style.display = "none";
+        }
+       
+        function enableButton() {
+            console.log(document.getElementById('power').checked);
+            console.log(@Model.TotalAmount);
+          
+            // ถ้ามีเงินอยู่
+            if (@Model.TotalAmount > 0) {
+                //Swith ปิด
+                document.getElementById('power').checked = true;
+                document.getElementById('power').disabled = true;
+                document.getElementById("CancelButton").style.display = "block";
+
+                //switch เปิด
+            }
+            else {
+            //ไม่มีเงินอยู่
+                document.getElementById("CancelButton").style.display = "none";
+                if (document.getElementById('power').checked) {
+                        document.getElementById("amount1").disabled = false;
+                        document.getElementById("amount5").disabled = false;
+                        document.getElementById("amount10").disabled = false;
+
+                    }
+                else {
+                        document.getElementById('amount1').disabled = true;
+                        document.getElementById('amount5').disabled = true;
+                        document.getElementById('amount10').disabled = true;
+
+                    }
+
+            }
+
+
+        }
+
+    </script>
